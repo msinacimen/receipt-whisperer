@@ -1,7 +1,5 @@
 resultList = []
 indexResultList = []
-oneHotEncodedList = []
-
 
 
 label_list = ["<start_\"company_name\">",
@@ -22,13 +20,14 @@ label_list2= ["Pad","Others","B_Comp","l_Comp","B_Date","l_Date","B_Time","l_Tim
 
  
 
-def one_hot_encode_index_list(index_list):
+def one_hot_encode_index_list():
+    oneHotEncodedList = []
     unique_labels_len = len(sorted(set(label_list2)))
-    for i in index_list:
+    for i in indexResultList:
         bitlist = list(0 for i in range(unique_labels_len))
         bitlist[i] = 1
         oneHotEncodedList.append(bitlist)
-    return
+    return oneHotEncodedList
 
 
 def splitfunction(text:str):
@@ -83,8 +82,12 @@ def tagingWords():
             counter+=1  
 
 
-
-
+def oneHotEncodedFunction(texts):
+    resultList.clear
+    indexResultList.clear
+    splitfunction(texts)
+    tagingWords()
+    return one_hot_encode_index_list()
 
 
 
@@ -208,11 +211,8 @@ NF JI 20041334
 
 
 
-splitfunction(texts)
-tagingWords()
-one_hot_encode_index_list(indexResultList)
+oneHotEncodedList = oneHotEncodedFunction(texts)
 
 
-
-for i in range(len(resultList)):
+for i in range(len(oneHotEncodedList)):
     print(f"{oneHotEncodedList[i]} ----- {resultList[i]}  ---->  {indexResultList[i]}")
