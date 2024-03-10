@@ -93,10 +93,10 @@ def oneHotEncodedFunction(texts):
 
 
 
-resultList = []
+
 folder_path = "C:\\Users\\mirac\\OneDrive\\Masaüstü\\BitirmeProjesi\\dataset\\training-data"  # localdeki train dosya adresi
 file_list = os.listdir(folder_path)
-
+y_train = []
 
 for file_name in file_list:
     if file_name.endswith(".txt"):
@@ -104,6 +104,5 @@ for file_name in file_list:
         with open(file_path, 'r', encoding='utf-8') as f:
             text = f.read()
             oneHotEncodedList = oneHotEncodedFunction(text)
-            resultList.append(oneHotEncodedList)
-            print(oneHotEncodedList)
+            y_train.append(oneHotEncodedList)
             
