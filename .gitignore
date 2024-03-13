@@ -1,5 +1,5 @@
 *.txt
 *.jpg
 key.json
-
+.ipynb_checkpoints/
 .DS_Store
