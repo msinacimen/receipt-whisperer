@@ -1,13 +1,25 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton, QFileDialog
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton, QFileDialog, QComboBox
+from tensorflow import keras
+from tensorflow.keras.models import load_model
 import easyocr
+import pytesseract
+from google.cloud import vision
+from google.oauth2 import service_account
+import io
+
+# credentials = service_account.Credentials.from_service_account_file('key.json')
+
+# client = vision.ImageAnnotatorClient(credentials=credentials)
+
+model = load_model("model.h5")
 
 class ImageReader(QWidget):
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle("Image Text Reader")
-        self.setGeometry(100, 100, 400, 200)
+        self.setGeometry(100, 100, 400, 250)
 
         self.layout = QVBoxLayout()
 
@@ -17,6 +29,10 @@ class ImageReader(QWidget):
         self.load_button = QPushButton("Görsel Yükle")
         self.load_button.clicked.connect(self.load_image)
         self.layout.addWidget(self.load_button)
+
+        self.ocr_selector = QComboBox()
+        self.ocr_selector.addItems(["EasyOCR", "Tesseract OCR", "Google Vision API"])
+        self.layout.addWidget(self.ocr_selector)
 
         self.text_label = QLabel("Metin burada görünecek")
         self.layout.addWidget(self.text_label)
@@ -30,14 +46,36 @@ class ImageReader(QWidget):
             self.process_image(file_path)
 
     def process_image(self, file_path):
-        reader = easyocr.Reader(['en']) # Sadece İngilizce metinleri okuyoruz
-        results = reader.readtext(file_path)
+        ocr_method = self.ocr_selector.currentText()
 
-        text = ""
-        for detection in results:
-            text += detection[1] + "\n"
+        if ocr_method == "EasyOCR":
+            reader = easyocr.Reader(["tr"])
+            result = reader.readtext(file_path)
+            text = " ".join([x[1] for x in result])
+            self.text_label.setText(text)
+        elif ocr_method == "Tesseract OCR":  # Tesseract OCR
+            text = pytesseract.image_to_string(file_path, lang="tur")
+            self.text_label.setText(text)
+        else:  # Google Cloud Vision
+            with io.open(file_path, 'rb') as image_file:
+                content = image_file.read()
 
-        self.text_label.setText(text)
+            image = vision.Image(content=content)
+
+            response = client.text_detection(image=image)
+            texts = response.text_annotations
+
+            if texts:
+                text = texts[0].description
+                print(text)
+                prediction = model.predict(text)
+
+                self.text_label.setText(prediction)
+            else:
+                print("Metin tespit edilemedi.")
+
+            print(text)
+            self.text_label.setText(text)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
