@@ -8,11 +8,11 @@ from google.cloud import vision
 from google.oauth2 import service_account
 import io
 
-# credentials = service_account.Credentials.from_service_account_file('key.json')
+credentials = service_account.Credentials.from_service_account_file('key.json')
 
-# client = vision.ImageAnnotatorClient(credentials=credentials)
+client = vision.ImageAnnotatorClient(credentials=credentials)
 
-model = load_model("model.h5")
+# model = load_model("model.h5")
 
 class ImageReader(QWidget):
     def __init__(self):
@@ -68,9 +68,9 @@ class ImageReader(QWidget):
             if texts:
                 text = texts[0].description
                 print(text)
-                prediction = model.predict(text)
+                # prediction = model.predict(text)
 
-                self.text_label.setText(prediction)
+                self.text_label.setText(text)
             else:
                 print("Metin tespit edilemedi.")
 
