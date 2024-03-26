@@ -1,21 +1,25 @@
-### GUI Usage
+# Running the Graphical User Interface (GUI)
 
-To ensure proper functioning of GUI applications, simply set:
+To utilize the Graphical User Interface (GUI), ensure you have the necessary dependencies installed within a Conda environment named GUIenv. Follow these steps to set up and activate the environment:
 
-```plaintext
-PYTHONIOENCODING=utf-8
-```
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/msinacimen/receipt-whisperer.git
+   ```
 
-This step is essential for GUI applications to work smoothly.
+2. **Navigate to the Project Directory:**
+   ```bash
+   cd receipt-whisperer
+   ```
 
-To install the necessary dependencies for GUI usage, run the following commands:
+3. **Create and Activate the Conda Environment:**
+   ```bash
+   conda env create -f GUIenv.yml -n GUIenv
+   conda activate GUIenv
+   ```
 
-```bash
-pip install pyqt5
-pip install easyocr
-pip install pytesseract
-```
+4. **Launch the GUI:**
+   - Open the `gui.ipynb` file in Jupyter Notebook or JupyterLab.
+   - Execute the notebook cells to launch the GUI interface.
 
-Make sure to install these packages before running your GUI application.
-
-Also, you need to have Tesseract OCR installed on your PC.
+By following these instructions, you'll ensure that all required dependencies are properly installed, and you'll be able to launch the GUI interface for the Receipt Whisperer project.
