@@ -28,7 +28,7 @@ These instructions will guide you through setting up the project on your local m
 
 3. **Create and Activate the Conda Environment:**
    ```bash
-   conda env create -f GUIenv.yml -n receipt-whisperer
+   conda env create -f GUIenv.yaml -n receipt-whisperer
    conda activate receipt-whisperer
    ```
 
